@@ -1,0 +1,12 @@
+<p-card>
+  <ng-template #title>
+    <div class="header">
+      <ng-content select="fred-widget-title"></ng-content>
+      <p-menubar [model]="items" [pt]="widgetMenu" />
+    </div>
+  </ng-template>
+  <p>
+    <ng-content select="fred-widget-body"></ng-content>
+  </p>
+</p-card>
+<p-confirmdialog />

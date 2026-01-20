@@ -1,0 +1,67 @@
+<p-dialog header="Add Widget" [(visible)]="showWidgetForm">
+  <fred-widget-form
+    [widget]="editingWidget()"
+    (widgetSubmit)="onWidgetSubmit($event)"
+  ></fred-widget-form>
+</p-dialog>
+
+<div class="dash-grid">
+  @if (widgets.hasValue()) {
+    <div class="text">
+      @for (text of text(); track text.id) {
+        <fred-widget
+          [widget]="text"
+          (editClick)="onWidgetEdit(text)"
+          (deleteClick)="onWidgetDelete(text)"
+        >
+          <title> </title>
+          <content>
+            <fred-text [widget]="text"></fred-text>
+          </content>
+        </fred-widget>
+      }
+    </div>
+    <div class="graphs">
+      @for (graph of graphs(); track graph.id) {
+        <fred-widget
+          [widget]="graph"
+          (editClick)="onWidgetEdit(graph)"
+          (deleteClick)="onWidgetDelete(graph)"
+        >
+          <fred-widget-title>{{ graph.title }}</fred-widget-title>
+          <fred-widget-body>
+            <fred-graph [widget]="graph"></fred-graph>
+          </fred-widget-body>
+        </fred-widget>
+      }
+    </div>
+    <div class="tables">
+      @for (table of tables(); track table.id) {
+        <fred-widget
+          [widget]="table"
+          (editClick)="onWidgetEdit(table)"
+          (deleteClick)="onWidgetDelete(table)"
+        >
+          <title>{{ table.title }}</title>
+          <content>
+            <fred-table [widget]="table"></fred-table>
+          </content>
+        </fred-widget>
+      }
+    </div>
+  } @else if (widgets.error()) {
+    <div>Could not load user information</div>
+  } @else if (widgets.isLoading()) {
+    <p-progress-spinner ariaLabel="loading" />
+  }
+</div>
+<div class="menubar-wrapper">
+  <p-button
+    icon="pi pi-plus"
+    class="mr-2"
+    text
+    severity="secondary"
+    (click)="showWidgetForm = true"
+    label="Add Widget"
+  ></p-button>
+</div>

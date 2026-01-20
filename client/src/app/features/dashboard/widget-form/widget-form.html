@@ -1,0 +1,43 @@
+<form (submit)="onSubmit($event)">
+  <section class="form-section">
+    <label for="title">Widget Title</label>
+    <input id="title" pInputText type="text" [field]="widgetForm.title" />
+  </section>
+  <section class="form-section">
+    <label for="type">Widget Type</label>
+    <p-select
+      id="type"
+      [options]="widgetTypes"
+      optionLabel="name"
+      optionValue="type"
+      [field]="widgetForm.type"
+      optionLabel="name"
+      placeholder="Select..."
+    />
+  </section>
+  <section class="form-section">
+    <label for="series">Series</label>
+    <input id="series" pInputText type="text" [field]="widgetForm.filter.series" />
+  </section>
+
+  <section class="form-section">
+    <label for="rangeDates">Date Range</label>
+    <p-datepicker
+      id="rangeDates"
+      [field]="widgetForm.filter.dateRange"
+      [showIcon]="true"
+      selectionMode="range"
+    />
+  </section>
+  <section class="form-section">
+    <label for="frequency">Frequency</label>
+    <p-select
+      [options]="frequencies"
+      optionLabel="name"
+      optionValue="type"
+      [field]="widgetForm.filter.frequency"
+      placeholder="Select..."
+    />
+  </section>
+  <p-button type="Submit">Submit</p-button>
+</form>

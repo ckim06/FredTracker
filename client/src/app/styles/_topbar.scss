@@ -1,0 +1,27 @@
+
+.layout-topbar {
+    position: fixed;
+    height: 4rem;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0 2rem;
+    background-color: var(--surface-card);
+    transition: left var(--layout-section-transition-duration);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    align-items: center;
+
+    .layout-topbar-actions {
+        margin-left: auto;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .layout-config-menu {
+        display: flex;
+        gap: 1rem;
+    }
+}

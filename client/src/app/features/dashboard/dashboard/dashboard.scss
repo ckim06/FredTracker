@@ -1,0 +1,11 @@
+
+.dash-grid {
+    display: grid;
+    margin: 5rem 1rem 0 1rem;
+    grid-gap: 1rem;
+    .graphs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 1rem;
+    }
+}

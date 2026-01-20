@@ -1,0 +1,18 @@
+###
+GET http://localhost:3000/db
+###
+
+POST http://localhost:13000/db
+Content-Type: application/json
+
+{
+    "filters": {"test": "test"},
+    "type": "chart"
+}
+
+###
+GET http://localhost:13000/api/indicators
+###
+
+DELETE http://localhost:13000/db/19b28545-d1a8-4e9e-a53d-12d1b7a98f40
+Content-Type: application/json
