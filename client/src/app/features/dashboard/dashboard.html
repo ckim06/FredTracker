@@ -1,4 +1,11 @@
-<p-dialog [header]="modalHeader()" [(visible)]="showWidgetForm" [baseZIndex]="6">
+<p-dialog
+  #widgetForm
+  [header]="modalHeader()"
+  [(visible)]="showWidgetForm"
+  [baseZIndex]="6"
+  appendTo="body"
+  [dismissableMask]="true"
+>
   <fred-widget-form
     [widget]="editingWidget()"
     (widgetSubmit)="onWidgetSubmit($event)"

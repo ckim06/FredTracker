@@ -1,17 +1,16 @@
 <form (submit)="onSubmit($event)">
   <section class="form-section">
     <label for="title">Widget Title</label>
-    <input id="title" pInputText type="text"  [fluid]="true" [field]="widgetForm.title" />
+    <input id="title" pInputText type="text" [fluid]="true" [field]="widgetForm.title" />
     @if (widgetForm.title().invalid()) {
       <p>
-      <p-message severity="error" variant="simple" icon="pi pi-times-circle">
-        @for (error of widgetForm.title().errors(); track error) {
-          {{ error.message  }}<br/>
-        }
-      </p-message>  
+        <p-message severity="error" variant="simple" icon="pi pi-times-circle">
+          @for (error of widgetForm.title().errors(); track error) {
+            {{ error.message }}<br />
+          }
+        </p-message>
       </p>
     }
-
   </section>
   <section class="form-section">
     <label for="type">Widget Type</label>
@@ -24,6 +23,7 @@
       optionLabel="name"
       placeholder="Select..."
       [fluid]="true"
+      appendTo="body"
     />
   </section>
   <section class="form-section">
@@ -40,6 +40,7 @@
       [showIcon]="true"
       [fluid]="true"
       selectionMode="range"
+      appendTo="body"
     />
   </section>
   <section class="form-section">
@@ -52,6 +53,7 @@
       [field]="widgetForm.filter.frequency"
       placeholder="Select..."
       [fluid]="true"
+      appendTo="body"
     />
   </section>
 

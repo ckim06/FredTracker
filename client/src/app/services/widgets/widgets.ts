@@ -75,8 +75,8 @@ export class WigetsService {
       filter: {
         series: formData.filter.series,
         frequency: formData.filter.frequency,
-        startDate: formData.filter.dateRange[0],
-        endDate: formData.filter.dateRange[1],
+        startDate: formData.filter?.dateRange[0] ?? new Date(0),
+        endDate: formData.filter?.dateRange[1] ?? new Date(),
       },
     };
   }
@@ -88,8 +88,11 @@ export class WigetsService {
       type: widget.type || 'graph',
       filter: {
         series: widget.filter.series ?? '',
-        frequency: widget.filter.frequency || 'm',
-        dateRange: [widget.filter.startDate ?? new Date(0), widget.filter.endDate ?? new Date()],
+        frequency: widget.filter?.frequency || 'm',
+        dateRange: [
+          (new Date(widget.filter?.startDate) as Date) ?? new Date(0),
+          (new Date(widget.filter?.endDate) as Date) ?? new Date(),
+        ],
       },
     };
   }

@@ -29,4 +29,8 @@ export class LayoutService {
     this.setEditingWidget(widget);
     this.showWidgetForm.set(true);
   }
+
+  closeModal() {
+    this.showWidgetForm.set(false);
+  }
 }

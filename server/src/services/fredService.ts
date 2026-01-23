@@ -16,13 +16,13 @@ export async function fetchSeriesMetadata(seriesId: string) {
   });
 }
 
-export async function fetchSeriesObservations(seriesId: string, params: { frequency?: string; units?: string; start?: string; end?: string } = {}) {
+export async function fetchSeriesObservations(seriesId: string, params: { frequency?: string; units?: string; observation_start?: string; observation_end?: string } = {}) {
   return fredGet("/series/observations", {
     series_id: seriesId,
     frequency: params.frequency ?? "m",
     units: params.units ?? "lin",
-    observation_start: params.start ?? "2000-01-01",
-    observation_end: params.end ?? "9999-12-31"
+    observation_start: params.observation_start ?? "2000-01-01",
+    observation_end: params.observation_end ?? "9999-12-31"
   });
 }
 
