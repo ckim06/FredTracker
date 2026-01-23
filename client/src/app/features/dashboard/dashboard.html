@@ -1,4 +1,4 @@
-<p-dialog header="Add Widget" [(visible)]="showWidgetForm">
+<p-dialog [header]="modalHeader()" [(visible)]="showWidgetForm" [baseZIndex]="6">
   <fred-widget-form
     [widget]="editingWidget()"
     (widgetSubmit)="onWidgetSubmit($event)"
@@ -14,10 +14,10 @@
           (editClick)="onWidgetEdit(text)"
           (deleteClick)="onWidgetDelete(text)"
         >
-          <title> </title>
-          <content>
+          <fred-widget-title>{{ text.title }}</fred-widget-title>
+          <fred-widget-body>
             <fred-text [widget]="text"></fred-text>
-          </content>
+          </fred-widget-body>
         </fred-widget>
       }
     </div>
@@ -61,7 +61,7 @@
     class="mr-2"
     text
     severity="secondary"
-    (click)="showWidgetForm = true"
+    (click)="openAddWidgetModal()"
     label="Add Widget"
   ></p-button>
 </div>

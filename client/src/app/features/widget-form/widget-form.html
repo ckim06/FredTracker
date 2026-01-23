@@ -1,7 +1,17 @@
 <form (submit)="onSubmit($event)">
   <section class="form-section">
     <label for="title">Widget Title</label>
-    <input id="title" pInputText type="text" [field]="widgetForm.title" />
+    <input id="title" pInputText type="text"  [fluid]="true" [field]="widgetForm.title" />
+    @if (widgetForm.title().invalid()) {
+      <p>
+      <p-message severity="error" variant="simple" icon="pi pi-times-circle">
+        @for (error of widgetForm.title().errors(); track error) {
+          {{ error.message  }}<br/>
+        }
+      </p-message>  
+      </p>
+    }
+
   </section>
   <section class="form-section">
     <label for="type">Widget Type</label>
@@ -13,31 +23,37 @@
       [field]="widgetForm.type"
       optionLabel="name"
       placeholder="Select..."
+      [fluid]="true"
     />
   </section>
   <section class="form-section">
     <label for="series">Series</label>
-    <input id="series" pInputText type="text" [field]="widgetForm.filter.series" />
+    <input id="series" pInputText type="text" [fluid]="true" [field]="widgetForm.filter.series" />
   </section>
 
   <section class="form-section">
     <label for="rangeDates">Date Range</label>
     <p-datepicker
       id="rangeDates"
+      class="date-range-picker"
       [field]="widgetForm.filter.dateRange"
       [showIcon]="true"
+      [fluid]="true"
       selectionMode="range"
     />
   </section>
   <section class="form-section">
     <label for="frequency">Frequency</label>
     <p-select
+      id="frequency"
       [options]="frequencies"
       optionLabel="name"
       optionValue="type"
       [field]="widgetForm.filter.frequency"
       placeholder="Select..."
+      [fluid]="true"
     />
   </section>
-  <p-button type="Submit">Submit</p-button>
+
+  <p-button [disabled]="widgetForm().invalid()" type="Submit">Submit</p-button>
 </form>

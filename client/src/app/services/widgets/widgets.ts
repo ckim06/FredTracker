@@ -3,12 +3,12 @@ import { baseUrl, SeriesObsResponse, Widget, WidgetFormData } from '@models';
 import { HttpClient, httpResource } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { FredService } from '../../../services/fred/fred';
+import { FredService } from '@services';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DashboardService {
+export class WigetsService {
   private readonly http = inject(HttpClient);
   private readonly fredService = inject(FredService);
   readonly widgets = httpResource<Widget[]>(() => `${baseUrl}db`, {
@@ -83,13 +83,13 @@ export class DashboardService {
 
   public widgetToFormData(widget: Widget): WidgetFormData {
     return {
-      id: widget.id,
-      title: widget.title,
-      type: widget.type,
+      id: widget.id ?? '',
+      title: widget.title ?? '',
+      type: widget.type || 'graph',
       filter: {
-        series: widget.filter.series,
-        frequency: widget.filter.frequency,
-        dateRange: [widget.filter.startDate, widget.filter.endDate],
+        series: widget.filter.series ?? '',
+        frequency: widget.filter.frequency || 'm',
+        dateRange: [widget.filter.startDate ?? new Date(0), widget.filter.endDate ?? new Date()],
       },
     };
   }

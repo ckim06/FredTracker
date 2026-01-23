@@ -1,18 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject, input, linkedSignal } from '@angular/core';
 import { Widget } from '@models';
-import { DashboardService } from '../../../services/dashboard';
+import { WigetsService } from '@services';
 
 @Component({
-  selector: 'fred-table',
+  selector: 'fred-text',
   imports: [],
-  templateUrl: './table.html',
-  styleUrl: './table.scss',
+  templateUrl: './text.html',
+  styleUrl: './text.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FredTable {
-  dashboardService = inject(DashboardService);
+export class FredText {
+  wigetsService = inject(WigetsService);
   readonly widget = input.required<Widget>();
   readonly linkedWidget = linkedSignal(() => this.widget());
 
-  data = this.dashboardService.getWidgetData(this.linkedWidget);
+  data = this.wigetsService.getWidgetData(this.linkedWidget);
 }

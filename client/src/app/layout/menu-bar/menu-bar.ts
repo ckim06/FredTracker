@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { DashboardService } from '../../features/dashboard/services/dashboard';
+import { Component } from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
 @Component({
   selector: 'fred-menu-bar',
@@ -8,7 +7,6 @@ import { MenubarModule } from 'primeng/menubar';
   styleUrl: './menu-bar.scss',
 })
 export class MenuBar {
-  dashboardService = inject(DashboardService);
   addWidgetVisible = false;
   menuItems = [];
 }

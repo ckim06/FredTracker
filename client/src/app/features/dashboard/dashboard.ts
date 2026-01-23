@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { DashboardService } from '../services/dashboard';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FredGraph } from './widgets/graph/graph';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FredTable } from './widgets/table/table';
 import { FredText } from './widgets/text/text';
 import { BaseWidget, WidgetTitle, WidgetBody } from './widgets/widget/widget';
-
 import { DialogModule } from 'primeng/dialog';
-import { initalWidget, Widget } from '@models';
 import { WidgetForm } from '../widget-form/widget-form';
 import { ButtonModule } from 'primeng/button';
+import { Widget } from '@models';
+import { WigetsService, LayoutService } from '@services';
+
+import { FredGraph } from './widgets/graph/graph';
 @Component({
   selector: 'fred-dashboard',
   imports: [
@@ -31,38 +31,34 @@ import { ButtonModule } from 'primeng/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard {
-  private readonly dashboardService = inject(DashboardService);
-  readonly widgets = this.dashboardService.widgets;
+  private readonly wigetsService = inject(WigetsService);
+  private readonly layoutService = inject(LayoutService);
+
+  readonly widgets = this.wigetsService.widgets;
 
   readonly text = computed(() => this.widgets.value().filter((w) => w.type === 'text'));
   readonly graphs = computed(() => this.widgets.value().filter((w) => w.type === 'graph'));
   readonly tables = computed(() => this.widgets.value().filter((w) => w.type === 'table'));
 
-  editingWidget = signal<Widget>(initalWidget);
-  showWidgetForm = false;
-  menuItems = [
-    {
-      label: 'Add Widget',
-      icon: 'pi pi-fw pi-plus',
-      command: () => {
-        this.editingWidget.set(initalWidget);
-        this.showWidgetForm = true;
-      },
-    },
-  ];
+  editingWidget = this.layoutService.editingWidget;
+  showWidgetForm = this.layoutService.showWidgetForm;
+  modalHeader = this.layoutService.modalHeader;
 
   onWidgetSubmit(widget: Widget) {
-    this.dashboardService.submitWidget(widget);
+    this.wigetsService.submitWidget(widget);
   }
 
   onWidgetEdit(widget: Widget) {
-    this.editingWidget.set(widget);
-    this.showWidgetForm = true;
+    this.layoutService.openEditModal(widget);
   }
 
   onWidgetDelete(widget: Widget) {
     if (widget.id) {
-      this.dashboardService.deleteWidget(widget.id);
+      this.wigetsService.deleteWidget(widget.id);
     }
+  }
+
+  openAddWidgetModal() {
+    this.layoutService.openAddModal();
   }
 }

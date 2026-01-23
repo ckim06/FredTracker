@@ -15,7 +15,9 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@models": ["./src/app/models.ts"]
+      "@models": ["./src/app/models.ts"],
+      "@services": ["./src/app/services/index.ts"],
+      "@features": ["./src/app/features"],
     }
   },
   "angularCompilerOptions": {

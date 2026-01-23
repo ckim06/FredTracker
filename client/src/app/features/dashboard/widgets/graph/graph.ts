@@ -7,10 +7,9 @@ import {
   linkedSignal,
 } from '@angular/core';
 import { Widget } from '@models';
-import { FredService } from '../../../../../services/fred/fred';
-import { ChartsService } from '../../../services/charts';
 import { ChartModule } from 'primeng/chart';
-import { DashboardService } from '../../../services/dashboard';
+import { WigetsService } from '@services';
+import { ChartsService } from '../../services';
 @Component({
   selector: 'fred-graph',
   imports: [ChartModule],
@@ -20,12 +19,11 @@ import { DashboardService } from '../../../services/dashboard';
 })
 export class FredGraph {
   charts = inject(ChartsService);
-  dashboardService = inject(DashboardService);
-  fredService = inject(FredService);
+  wigetsService = inject(WigetsService);
   readonly widget = input.required<Widget>();
   readonly linkedWidget = linkedSignal(() => this.widget());
 
-  data = this.dashboardService.getWidgetData(this.linkedWidget);
+  data = this.wigetsService.getWidgetData(this.linkedWidget);
 
   chartData = computed(() => {
     if (this.data.hasValue()) {

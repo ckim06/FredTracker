@@ -13,7 +13,8 @@ import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { form, Field, required, submit } from '@angular/forms/signals';
 import { DatePickerModule } from 'primeng/datepicker';
-import { DashboardService } from '../services/dashboard';
+import { MessageModule } from 'primeng/message';
+import { WigetsService } from '@services';
 @Component({
   selector: 'fred-widget-form',
   imports: [
@@ -23,21 +24,20 @@ import { DashboardService } from '../services/dashboard';
     InputTextModule,
     Field,
     DatePickerModule,
+    MessageModule,
   ],
   templateUrl: './widget-form.html',
   styleUrl: './widget-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WidgetForm {
-  dashboardService = inject(DashboardService);
+  wigetsService = inject(WigetsService);
   widget = input<Widget>(initalWidget);
   widgetSubmit = output<Widget>();
 
-  readonly linkedWidget = linkedSignal(() => this.dashboardService.widgetToFormData(this.widget()));
-
+  linkedWidget = linkedSignal(() => this.wigetsService.widgetToFormData(this.widget()));
   widgetForm = form(this.linkedWidget, (schemaPath) => {
     required(schemaPath.title, { message: 'Title is required' });
-    required(schemaPath.type, { message: 'Type is required' });
   });
 
   frequencies = [
@@ -55,7 +55,7 @@ export class WidgetForm {
   onSubmit(event: Event) {
     event.preventDefault();
     submit(this.widgetForm, async () => {
-      this.widgetSubmit.emit(this.dashboardService.formDataToWidget(this.linkedWidget()));
+      this.widgetSubmit.emit(this.wigetsService.formDataToWidget(this.linkedWidget()));
     });
   }
 }
