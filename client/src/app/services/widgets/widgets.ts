@@ -122,6 +122,17 @@ export class WigetsService {
       ],
     };
   }
+  parseSeriesObsToText(rawResponse: SeriesObsResponse): { value: number; percentChange: number } {
+    const observations = rawResponse.observations;
+    if (observations.length < 2) {
+      return { value: 0, percentChange: 0 };
+    }
+    const lastValue = parseFloat(observations[observations.length - 1].value);
+    const secondLastValue = parseFloat(observations[observations.length - 2].value);
+    const percentChange =
+      secondLastValue !== 0 ? ((lastValue - secondLastValue) / secondLastValue) * 100 : 0;
+    return { value: lastValue, percentChange };
+  }
 
   public parseSeriesObsToTable(rawResponse: SeriesObsResponse): { date: string; value: string }[] {
     return rawResponse.observations.map((obs) => ({

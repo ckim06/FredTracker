@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +11,7 @@ import { WigetsService } from '@services';
 import { TableModule } from 'primeng/table';
 @Component({
   selector: 'fred-table',
-  imports: [TableModule, JsonPipe],
+  imports: [TableModule],
   templateUrl: './table.html',
   styleUrl: './table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

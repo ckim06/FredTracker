@@ -25,4 +25,5 @@ enum WidgetType {
   chart
   graph
   table
+  text
 }
