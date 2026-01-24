@@ -2,11 +2,11 @@
   <section class="form-section">
     <label for="title">Widget Title</label>
     <input id="title" pInputText type="text" [fluid]="true" [field]="widgetForm.title" />
-    @if (widgetForm.title().invalid()) {
+    @if (widgetForm.title().invalid() && widgetForm.title().touched()) {
       <p>
         <p-message severity="error" variant="simple" icon="pi pi-times-circle">
           @for (error of widgetForm.title().errors(); track error) {
-            {{ error.message }}<br />
+            {{ error.message }} <br />
           }
         </p-message>
       </p>

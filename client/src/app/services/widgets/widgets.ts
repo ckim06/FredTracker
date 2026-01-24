@@ -4,6 +4,8 @@ import { HttpClient, httpResource } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FredService } from '@services';
+import { formatDate } from '@angular/common';
+import { ChartData } from 'chart.js';
 
 @Injectable({
   providedIn: 'root',
@@ -95,5 +97,36 @@ export class WigetsService {
         ],
       },
     };
+  }
+  getChartOptions() {
+    return {
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    };
+  }
+  public parseSeriesObs(rawResponse: SeriesObsResponse): ChartData {
+    return {
+      labels: rawResponse.observations.map((obs) => formatDate(obs.date, 'M/yy', 'en-US')),
+
+      datasets: [
+        {
+          label: '',
+          pointStyle: false,
+          borderColor: '#10b981',
+          data: rawResponse.observations.map((obs) => parseFloat(obs.value)),
+          tension: 0.1,
+        },
+      ],
+    };
+  }
+
+  public parseSeriesObsToTable(rawResponse: SeriesObsResponse): { date: string; value: string }[] {
+    return rawResponse.observations.map((obs) => ({
+      date: formatDate(obs.date, 'MM/dd/yyyy', 'en-US'),
+      value: obs.value,
+    }));
   }
 }

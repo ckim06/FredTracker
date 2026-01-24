@@ -49,10 +49,10 @@
           (editClick)="onWidgetEdit(table)"
           (deleteClick)="onWidgetDelete(table)"
         >
-          <title>{{ table.title }}</title>
-          <content>
+          <fred-widget-title>{{ table.title }}</fred-widget-title>
+          <fred-widget-body>
             <fred-table [widget]="table"></fred-table>
-          </content>
+          </fred-widget-body>
         </fred-widget>
       }
     </div>
