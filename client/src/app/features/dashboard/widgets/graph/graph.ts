@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Widget } from '@models';
 import { ChartModule } from 'primeng/chart';
-import { WigetsService } from '@services';
+import { ChartsService, WigetsService } from '@services';
 import { SkeletonModule } from 'primeng/skeleton';
 @Component({
   selector: 'fred-graph',
@@ -19,6 +19,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 })
 export class FredGraph {
   wigetsService = inject(WigetsService);
+  chartsService = inject(ChartsService);
   readonly widget = input.required<Widget>();
   readonly linkedWidget = linkedSignal(() => this.widget());
 
@@ -26,9 +27,9 @@ export class FredGraph {
 
   chartData = computed(() => {
     if (this.data.hasValue()) {
-      return this.wigetsService.parseSeriesObs(this.data.value());
+      return this.chartsService.parseSeriesObs(this.data.value());
     }
     return null;
   });
-  chartOptions = this.wigetsService.getChartOptions();
+  chartOptions = this.chartsService.getChartOptions();
 }

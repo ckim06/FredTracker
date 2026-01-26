@@ -14,7 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { form, Field, required, submit } from '@angular/forms/signals';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MessageModule } from 'primeng/message';
-import { WigetsService } from '@services';
+import { ChartsService, WigetsService } from '@services';
 @Component({
   selector: 'fred-widget-form',
   imports: [
@@ -32,10 +32,11 @@ import { WigetsService } from '@services';
 })
 export class WidgetForm {
   wigetsService = inject(WigetsService);
+  chartsService = inject(ChartsService);
   widget = input<Widget>(initalWidget);
   widgetSubmit = output<Widget>();
 
-  linkedWidget = linkedSignal(() => this.wigetsService.widgetToFormData(this.widget()));
+  linkedWidget = linkedSignal(() => this.chartsService.widgetToFormData(this.widget()));
   widgetForm = form(this.linkedWidget, (schemaPath) => {
     required(schemaPath.title, { message: 'Title is required' });
   });
@@ -55,7 +56,7 @@ export class WidgetForm {
   onSubmit(event: Event) {
     event.preventDefault();
     submit(this.widgetForm, async () => {
-      this.widgetSubmit.emit(this.wigetsService.formDataToWidget(this.linkedWidget()));
+      this.widgetSubmit.emit(this.chartsService.formDataToWidget(this.linkedWidget()));
     });
   }
 }

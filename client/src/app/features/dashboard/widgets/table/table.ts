@@ -7,7 +7,7 @@ import {
   linkedSignal,
 } from '@angular/core';
 import { Widget } from '@models';
-import { WigetsService } from '@services';
+import { ChartsService, WigetsService } from '@services';
 import { TableModule } from 'primeng/table';
 @Component({
   selector: 'fred-table',
@@ -18,6 +18,7 @@ import { TableModule } from 'primeng/table';
 })
 export class FredTable {
   wigetsService = inject(WigetsService);
+  chartsService = inject(ChartsService);
   readonly widget = input.required<Widget>();
   readonly linkedWidget = linkedSignal(() => this.widget());
 
@@ -25,7 +26,7 @@ export class FredTable {
 
   tableData = computed(() => {
     if (this.data.hasValue()) {
-      return this.wigetsService.parseSeriesObsToTable(this.data.value());
+      return this.chartsService.parseSeriesObsToTable(this.data.value());
     }
     return [];
   });

@@ -5,30 +5,22 @@ import { baseUrl, Widget } from '@models';
   providedIn: 'root',
 })
 export class FredService {
-  buildUrl(widget: Widget): string | undefined {
-    if (!widget) return undefined;
+  buildUrl(widget: Widget): string {
+    if (!widget) return '';
     let queryString = '';
     if (widget.filter) {
       if (widget.filter.series) {
         queryString += `series/${encodeURIComponent(widget.filter.series)}/observations?`;
       }
 
-      if (widget.filter.frequency) {
-        queryString += `frequency=${widget.filter.frequency}`;
+      for (const f in widget.filter) {
+        const filterProp = f as keyof typeof widget.filter;
+        if (f !== 'series' && widget.filter[filterProp]) {
+          queryString += `${f}=${encodeURIComponent(String(widget.filter[filterProp]))}&`;
+        }
       }
-
-      if (widget.filter.startDate) {
-        queryString += `&observation_start=${encodeURIComponent(
-          new Date(widget.filter.startDate).toISOString().split('T')[0],
-        )}`;
-      }
-
-      if (widget.filter.endDate) {
-        queryString += `&observation_end=${encodeURIComponent(
-          new Date(widget.filter.endDate).toISOString().split('T')[0],
-        )}`;
-      }
+      queryString = queryString.slice(0, -1); // Remove trailing &
     }
-    return queryString ? `${baseUrl}api/${queryString}` : undefined;
+    return queryString ? `${baseUrl}api/${queryString}` : '';
   }
 }

@@ -7,7 +7,7 @@ import {
   linkedSignal,
 } from '@angular/core';
 import { Widget } from '@models';
-import { WigetsService } from '@services';
+import { ChartsService, WigetsService } from '@services';
 
 @Component({
   selector: 'fred-text',
@@ -18,6 +18,7 @@ import { WigetsService } from '@services';
 })
 export class FredText {
   wigetsService = inject(WigetsService);
+  chartsService = inject(ChartsService);
   readonly widget = input.required<Widget>();
   readonly linkedWidget = linkedSignal(() => this.widget());
 
@@ -25,7 +26,7 @@ export class FredText {
 
   textData = computed(() => {
     if (this.data.hasValue()) {
-      return this.wigetsService.parseSeriesObsToText(this.data.value());
+      return this.chartsService.parseSeriesObsToText(this.data.value());
     }
     return { value: 0, percentChange: 0 };
   });
