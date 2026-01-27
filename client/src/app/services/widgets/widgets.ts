@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { baseUrl, SeriesObsResponse, Widget } from '@models';
 import { HttpClient, httpResource } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { FredService } from '@services';
 
 @Injectable({
@@ -25,12 +25,13 @@ export class WigetsService {
   }
   deleteWidget(id: string): Observable<void> {
     return this.http.delete<void>(`${baseUrl}db/${id}`).pipe(
+      takeUntilDestroyed(this.destroyRef),
       tap(() => {
         this.widgets.update((widgets) => widgets?.filter((w) => w.id !== id));
       }),
-      catchError((error) => {
-        console.error(error);
-        return of(error);
+      catchError((err) => {
+        console.error('Caught in catchError operator:', err.message);
+        return throwError(() => new Error('Error deleting widget. Details: ' + err.message));
       }),
     );
   }
@@ -43,21 +44,22 @@ export class WigetsService {
         });
         return widgetFromServer;
       }),
-      catchError((error) => {
-        console.error(error);
-        return of(error);
+      catchError((err) => {
+        console.error('Caught in catchError operator:', err.message);
+        return throwError(() => new Error('Error updating widget. Details: ' + err.message));
       }),
     );
   }
   private addWidget(widget: Widget): Observable<Widget> {
     return this.http.post<Widget>(`${baseUrl}db/`, widget).pipe(
+      takeUntilDestroyed(this.destroyRef),
       map((widgetFromServer) => {
         this.widgets.update((widgets) => [...(widgets ?? []), widgetFromServer]);
         return widgetFromServer;
       }),
-      catchError((error) => {
-        console.error(error);
-        return of(error);
+      catchError((err) => {
+        console.error('Caught in catchError operator:', err.message);
+        return throwError(() => new Error('Error adding widget. Details: ' + err.message));
       }),
     );
   }

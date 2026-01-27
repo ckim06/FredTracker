@@ -14,7 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { form, Field, required, submit } from '@angular/forms/signals';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MessageModule } from 'primeng/message';
-import { ChartsService, WigetsService } from '@services';
+import { ChartsService } from '@services';
 @Component({
   selector: 'fred-widget-form',
   imports: [
@@ -31,7 +31,6 @@ import { ChartsService, WigetsService } from '@services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WidgetForm {
-  wigetsService = inject(WigetsService);
   chartsService = inject(ChartsService);
   widget = input<Widget>(initalWidget);
   widgetSubmit = output<Widget>();
