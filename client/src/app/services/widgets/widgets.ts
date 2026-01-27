@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { baseUrl, SeriesObsResponse, Widget } from '@models';
 import { HttpClient, httpResource } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { FredService } from '@services';
 
 @Injectable({
