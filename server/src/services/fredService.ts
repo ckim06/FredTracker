@@ -24,6 +24,7 @@ export async function fetchSeriesObservations(seriesId: string, params: { freque
     observation_start: params.observation_start ?? "2000-01-01",
     observation_end: params.observation_end ?? "9999-12-31"
   });
+  console.log('fetched observations for series:', seriesId);
 }
 
 export async function searchSeries(text: string) {
@@ -41,7 +42,6 @@ async function fredGet(path: string, params = {}) {
         ...params
       }
     });
-
     return response.data;
   } catch (err: any) {
     console.error("FRED API Error:", err.response?.data || err.message);

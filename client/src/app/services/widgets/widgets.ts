@@ -2,8 +2,8 @@ import { DestroyRef, inject, Injectable, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { baseUrl, SeriesObsResponse, Widget } from '@models';
 import { HttpClient, httpResource } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { FredService } from '@services';
 
 @Injectable({
@@ -29,10 +29,6 @@ export class WigetsService {
       tap(() => {
         this.widgets.update((widgets) => widgets?.filter((w) => w.id !== id));
       }),
-      catchError((err) => {
-        console.error('Caught in catchError operator:', err.message);
-        return throwError(() => new Error('Error deleting widget. Details: ' + err.message));
-      }),
     );
   }
   private updateWidget(widget: Widget): Observable<Widget> {
@@ -44,10 +40,6 @@ export class WigetsService {
         });
         return widgetFromServer;
       }),
-      catchError((err) => {
-        console.error('Caught in catchError operator:', err.message);
-        return throwError(() => new Error('Error updating widget. Details: ' + err.message));
-      }),
     );
   }
   private addWidget(widget: Widget): Observable<Widget> {
@@ -56,10 +48,6 @@ export class WigetsService {
       map((widgetFromServer) => {
         this.widgets.update((widgets) => [...(widgets ?? []), widgetFromServer]);
         return widgetFromServer;
-      }),
-      catchError((err) => {
-        console.error('Caught in catchError operator:', err.message);
-        return throwError(() => new Error('Error adding widget. Details: ' + err.message));
       }),
     );
   }

@@ -40,6 +40,7 @@ router.get("/series/:id", async (req, res) => {
  */
 router.get("/series/:id/observations", async (req, res) => {
   try {
+    
     const data = await fetchSeriesObservations(req.params.id, req.query);
     res.json(data);
   } catch (err: any) {

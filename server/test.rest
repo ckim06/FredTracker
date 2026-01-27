@@ -1,5 +1,5 @@
 ###
-GET http://localhost:3000/db
+GET http://localhost:13000/db
 ###
 
 POST http://localhost:13000/db
@@ -16,3 +16,11 @@ GET http://localhost:13000/api/indicators
 
 DELETE http://localhost:13000/db/19b28545-d1a8-4e9e-a53d-12d1b7a98f40
 Content-Type: application/json
+
+###
+POST http://localhost:13000/mcp/process
+Content-Type: application/json
+
+{
+    "message": "create a new widget with title 'Sales Data', type 'graph', filter series use CPIAUCSL"
+}
