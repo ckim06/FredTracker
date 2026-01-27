@@ -17,8 +17,8 @@ import { TableModule } from 'primeng/table';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FredTable {
-  wigetsService = inject(WigetsService);
-  chartsService = inject(ChartsService);
+  private readonly wigetsService = inject(WigetsService);
+  private readonly chartsService = inject(ChartsService);
   readonly widget = input.required<Widget>();
   readonly linkedWidget = linkedSignal(() => this.widget());
 

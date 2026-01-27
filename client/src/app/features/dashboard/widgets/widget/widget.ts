@@ -5,7 +5,6 @@ import { CardModule } from 'primeng/card';
 import { MenubarModule, MenubarPassThrough } from 'primeng/menubar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'fred-widget-title',
   template: `<ng-content>fred-widget-title</ng-content>`,
@@ -19,7 +18,7 @@ export class WidgetBody {}
 
 @Component({
   selector: 'fred-widget',
-  imports: [CardModule, ButtonModule, MenubarModule, ConfirmDialog, ToastModule],
+  imports: [CardModule, ButtonModule, MenubarModule, ConfirmDialog],
   providers: [ConfirmationService, MessageService],
   templateUrl: './widget.html',
   styleUrl: './widget.scss',
@@ -41,8 +40,8 @@ export class BaseWidget {
       style: 'flex-wrap: nowrap;',
     },
   };
-  confirmationService = inject(ConfirmationService);
-  messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly messageService = inject(MessageService);
 
   confirmDelete(widget: Widget) {
     this.confirmationService.confirm({

@@ -49,7 +49,10 @@ app.put('/db', async (req, res) => {
                 filter
             }
         });
-         res.status(200).send({ message: 'updated record' });
+          const widget = await prisma.widgets.findFirst({
+            where: { id: id }
+        });
+         res.status(200).send(widget);
     } catch (err) {
         console.log(err);
         res.sendStatus(500);

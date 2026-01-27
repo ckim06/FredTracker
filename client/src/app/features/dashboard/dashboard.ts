@@ -9,8 +9,9 @@ import { WidgetForm } from '../widget-form/widget-form';
 import { ButtonModule } from 'primeng/button';
 import { Widget } from '@models';
 import { WigetsService, LayoutService } from '@services';
-
+import { ToastModule } from 'primeng/toast';
 import { FredGraph } from './widgets/graph/graph';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'fred-dashboard',
   imports: [
@@ -25,7 +26,9 @@ import { FredGraph } from './widgets/graph/graph';
     DialogModule,
     ButtonModule,
     WidgetForm,
+    ToastModule,
   ],
+  providers: [MessageService],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +36,7 @@ import { FredGraph } from './widgets/graph/graph';
 export class Dashboard {
   private readonly wigetsService = inject(WigetsService);
   private readonly layoutService = inject(LayoutService);
+  private readonly messageService = inject(MessageService);
   readonly widgets = this.wigetsService.widgets;
 
   readonly text = computed(() => this.widgets.value().filter((w) => w.type === 'text'));
@@ -44,8 +48,19 @@ export class Dashboard {
   modalHeader = this.layoutService.modalHeader;
 
   onWidgetSubmit(widget: Widget) {
-    this.layoutService.closeModal();
-    this.wigetsService.submitWidget(widget);
+    this.wigetsService.submitWidget(widget).subscribe({
+      complete: () => {
+        this.layoutService.closeModal();
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'There was an error submitting the widget.',
+        });
+        console.error('Error submitting widget:', error);
+      },
+    });
   }
 
   onWidgetEdit(widget: Widget) {
@@ -54,7 +69,23 @@ export class Dashboard {
 
   onWidgetDelete(widget: Widget) {
     if (widget.id) {
-      this.wigetsService.deleteWidget(widget.id);
+      this.wigetsService.deleteWidget(widget.id).subscribe({
+        complete: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Deleted',
+            detail: 'Widget deleted successfully.',
+          });
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'There was an error deleting the widget.',
+          });
+          console.error('Error deleting widget:', error);
+        },
+      });
     }
   }
 
