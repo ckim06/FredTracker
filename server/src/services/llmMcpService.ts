@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import prisma from '../prisma-connection.ts';
+import { searchSeries } from './fredService.ts';
 
 const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
@@ -20,7 +21,20 @@ const widgetTools = {
           description: 'Widget type',
         },
         filter: {
-          type: SchemaType.STRING,
+          type: SchemaType.OBJECT,
+          properties: {
+            series: {
+              type: SchemaType.STRING,
+              description: 'Series ID from FRED API',
+            },
+            frequency: {
+              type: SchemaType.STRING,
+              enum: ['m', 'q', 'sa', 'a'],
+              description: 'Data frequency',
+            },
+            startDate: { type: SchemaType.STRING, description: 'Start date' },
+            endDate: { type: SchemaType.STRING, description: 'End date' },
+          },
           description: 'Widget filter or configuration',
         },
       },
@@ -46,7 +60,20 @@ const widgetTools = {
           description: 'Widget type',
         },
         filter: {
-          type: SchemaType.STRING,
+          type: SchemaType.OBJECT,
+          properties: {
+            series: {
+              type: SchemaType.STRING,
+              description: 'Series ID from FRED API',
+            },
+            frequency: {
+              type: SchemaType.STRING,
+              enum: ['m', 'q', 'sa', 'a'],
+              description: 'Data frequency',
+            },
+            startDate: { type: SchemaType.STRING, description: 'Start date' },
+            endDate: { type: SchemaType.STRING, description: 'End date' },
+          },
           description: 'Widget filter or configuration',
         },
       },
@@ -73,6 +100,21 @@ const widgetTools = {
       properties: {},
     },
   },
+  searchFredSeries: {
+    description:
+      'Get economic data series from FRED (St. Louis Fed) that match a search text query.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        search_text: {
+          type: SchemaType.STRING,
+          description:
+            "The words to match against economic data series (e.g., 'unemployment' or 'gdp').",
+        },
+      },
+      required: ['search_text'],
+    },
+  },
 };
 
 export async function processLLMRequest(userMessage: string): Promise<string> {
@@ -80,8 +122,6 @@ export async function processLLMRequest(userMessage: string): Promise<string> {
     model: 'gemini-2.0-flash',
   });
 
-
-       
   const chat = model.startChat({
     tools: [
       {
@@ -106,6 +146,11 @@ export async function processLLMRequest(userMessage: string): Promise<string> {
             description: widgetTools.getWidgets.description,
             parameters: widgetTools.getWidgets.parameters,
           },
+          {
+            name: 'searchFredSeries',
+            description: widgetTools.searchFredSeries.description,
+            parameters: widgetTools.searchFredSeries.parameters,
+          },
         ],
       },
     ],
@@ -113,17 +158,17 @@ export async function processLLMRequest(userMessage: string): Promise<string> {
 
   // Send initial message
   let response = await chat.sendMessage(userMessage);
-  const toolCalls = response.response.functionCalls() || [];
   // Agentic loop - keep processing until no more tool calls
-  while (toolCalls && toolCalls.length > 0) {
-  
+  let functionCount = response.response.functionCalls()?.length || 0;
+  while (functionCount > 0) {
     const toolResults: { name: string; result: any }[] = [];
 
+    const toolCalls = response.response.functionCalls() || [];
     // Execute all tool calls
     for (const toolCall of toolCalls) {
       const result = await executeWidgetTool(
         toolCall.name,
-        toolCall.args as Record<string, any>
+        toolCall.args as Record<string, any>,
       );
       toolResults.push({
         name: toolCall.name,
@@ -140,17 +185,19 @@ export async function processLLMRequest(userMessage: string): Promise<string> {
     }));
 
     response = await chat.sendMessage(toolResultContent);
+    functionCount = response.response.functionCalls()?.length || 0;
   }
 
   // Extract final text response
-  const textContent = response.response
-    .candidates?.[0]?.content?.parts?.find((part: any) => part.text)?.text;
+  const textContent = response.response.candidates?.[0]?.content?.parts?.find(
+    (part: any) => part.text,
+  )?.text;
   return textContent || 'No response generated';
 }
 
 async function executeWidgetTool(
   toolName: string,
-  input: Record<string, any>
+  input: Record<string, any>,
 ): Promise<any> {
   try {
     switch (toolName) {
@@ -162,6 +209,8 @@ async function executeWidgetTool(
         return await handleDeleteWidget(input);
       case 'getWidgets':
         return await handleGetWidgets();
+      case 'searchFredSeries':
+        return await handleSearchFredSeries(input);
       default:
         return { error: `Unknown tool: ${toolName}` };
     }
@@ -229,5 +278,15 @@ async function handleGetWidgets(): Promise<any> {
     success: true,
     count: widgets.length,
     widgets,
+  };
+}
+async function handleSearchFredSeries(
+  input: Record<string, any>,
+): Promise<any> {
+  const results = await searchSeries(input.search_text);
+  return {
+    success: true,
+    count: results.length,
+    results,
   };
 }
