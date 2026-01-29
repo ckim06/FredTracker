@@ -12,6 +12,8 @@ import { WigetsService, LayoutService } from '@services';
 import { ToastModule } from 'primeng/toast';
 import { FredGraph } from './widgets/graph/graph';
 import { MessageService } from 'primeng/api';
+import { FredChat } from '../chat/chat';
+import { PopoverModule } from 'primeng/popover';
 @Component({
   selector: 'fred-dashboard',
   imports: [
@@ -27,6 +29,8 @@ import { MessageService } from 'primeng/api';
     ButtonModule,
     WidgetForm,
     ToastModule,
+    FredChat,
+    PopoverModule,
   ],
   providers: [MessageService],
   templateUrl: './dashboard.html',

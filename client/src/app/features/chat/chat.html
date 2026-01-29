@@ -1,0 +1,23 @@
+<div class="chat-container">
+  <p-scrollPanel class="chat-messages">
+    @for (m of messages(); track $index) {
+      <div class="msg" [ngClass]="m.from">
+        @if (m.from === 'bot') {
+          <p-avatar class="avatar"></p-avatar>
+        }
+        <div class="bubble">{{ m.text }}</div>
+      </div>
+    }
+  </p-scrollPanel>
+
+  <form class="chat-input" #chatForm="ngForm" (ngSubmit)="send()">
+    <textarea
+      name="text"
+      pTextarea
+      rows="2"
+      placeholder="Type a message..."
+      [(ngModel)]="text"
+    ></textarea>
+    <p-button type="submit" icon="pi pi-send"></p-button>
+  </form>
+</div>

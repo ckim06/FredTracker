@@ -22,5 +22,5 @@ POST http://localhost:13000/mcp/process
 Content-Type: application/json
 
 {
-    "message": "Search FRED series for 'unemployment rate for retail.  Use the series id to add a widget with title 'Retail Unemployment Rate'"
+    "message": "hi"
 }

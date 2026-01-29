@@ -13,6 +13,11 @@
 </p-dialog>
 
 <p-toast></p-toast>
+<p-popover #chatPopover>
+  <ng-template #content>
+    <fred-chat></fred-chat>
+  </ng-template>
+</p-popover>
 
 <div class="dash-grid">
   @if (widgets.hasValue()) {
@@ -72,5 +77,13 @@
     severity="secondary"
     (click)="openAddWidgetModal()"
     label="Add Widget"
+  ></p-button>
+  <p-button
+    icon="pi pi-sparkles"
+    class="mr-2"
+    text
+    severity="secondary"
+    (click)="chatPopover.toggle($event)"
+    label="AI Chat"
   ></p-button>
 </div>

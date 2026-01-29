@@ -4,7 +4,12 @@
     "secure": false,
     "changeOrigin": true
   },
-    "/db/**": {
+  "/db/**": {
+    "target": "http://localhost:13000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/mcp/**": {
     "target": "http://localhost:13000",
     "secure": false,
     "changeOrigin": true

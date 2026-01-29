@@ -61,3 +61,8 @@ export const initalFilter: Filter = {
   endDate: new Date(),
 };
 export const initalWidget: Widget = { title: '', type: 'graph', filter: initalFilter };
+export interface ChatMessage {
+  id: string;
+  from: 'user' | 'bot';
+  text: string;
+}

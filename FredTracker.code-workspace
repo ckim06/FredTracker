@@ -6,5 +6,10 @@
 			{
 			"path": "server"
 		}
-	]
+	],
+	"settings": {
+		"chat.instructionsFilesLocations": {
+			"client/": true
+		}
+	}
 }

@@ -1,5 +1,10 @@
 @if (data.hasValue()) {
   <p>{{ textData().value }}</p>
 
-  <p>{{ textData().percentChange }}%</p>
+  <p
+    [class.positive]="textData().percentChange > 0"
+    [class.negative]="textData().percentChange < 0"
+  >
+    {{ textData().percentChange.toFixed(2) }}%
+  </p>
 }
