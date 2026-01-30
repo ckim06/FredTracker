@@ -1,7 +1,12 @@
 export interface BaseWidget {
   id?: string;
-  type: 'graph' | 'table' | 'text';
+  type: WidgetType;
   title: string;
+}
+export enum WidgetType {
+  Graph = 'graph',
+  Text = 'text',
+  Table = 'table',
 }
 export interface Widget extends BaseWidget {
   filter: Filter;
@@ -60,7 +65,7 @@ export const initalFilter: Filter = {
   startDate: new Date(0),
   endDate: new Date(),
 };
-export const initalWidget: Widget = { title: '', type: 'graph', filter: initalFilter };
+export const initalWidget: Widget = { title: '', type: WidgetType.Graph, filter: initalFilter };
 export interface ChatMessage {
   id: string;
   from: 'user' | 'bot';

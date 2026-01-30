@@ -14,6 +14,10 @@ export class ChatService {
   append(from: 'user' | 'bot', text: string) {
     const id = `m${Date.now()}`;
     this._messages.set([...this.messages(), { id, from, text }]);
+
+    if (from === 'user') {
+      this.text.set('');
+    }
   }
 
   async send() {

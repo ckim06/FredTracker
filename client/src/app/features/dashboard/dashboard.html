@@ -28,10 +28,6 @@
           (editClick)="onWidgetEdit(text)"
           (deleteClick)="onWidgetDelete(text)"
         >
-          <fred-widget-title>{{ text.title }}</fred-widget-title>
-          <fred-widget-body>
-            <fred-text [widget]="text"></fred-text>
-          </fred-widget-body>
         </fred-widget>
       }
     </div>
@@ -41,12 +37,7 @@
           [widget]="graph"
           (editClick)="onWidgetEdit(graph)"
           (deleteClick)="onWidgetDelete(graph)"
-        >
-          <fred-widget-title>{{ graph.title }}</fred-widget-title>
-          <fred-widget-body>
-            <fred-graph [widget]="graph"></fred-graph>
-          </fred-widget-body>
-        </fred-widget>
+        ></fred-widget>
       }
     </div>
     <div class="tables">
@@ -56,10 +47,6 @@
           (editClick)="onWidgetEdit(table)"
           (deleteClick)="onWidgetDelete(table)"
         >
-          <fred-widget-title>{{ table.title }}</fred-widget-title>
-          <fred-widget-body>
-            <fred-table [widget]="table"></fred-table>
-          </fred-widget-body>
         </fred-widget>
       }
     </div>

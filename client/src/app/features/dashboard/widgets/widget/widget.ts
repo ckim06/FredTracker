@@ -5,20 +5,13 @@ import { CardModule } from 'primeng/card';
 import { MenubarModule, MenubarPassThrough } from 'primeng/menubar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-@Component({
-  selector: 'fred-widget-title',
-  template: `<ng-content>fred-widget-title</ng-content>`,
-})
-export class WidgetTitle {}
-@Component({
-  selector: 'fred-widget-body',
-  template: `<ng-content>fred-widget-body</ng-content>`,
-})
-export class WidgetBody {}
+import { FredText } from '../text/text';
+import { FredTable } from '../table/table';
+import { FredGraph } from '../graph/graph';
 
 @Component({
   selector: 'fred-widget',
-  imports: [CardModule, ButtonModule, MenubarModule, ConfirmDialog],
+  imports: [CardModule, ButtonModule, MenubarModule, ConfirmDialog, FredGraph, FredTable, FredText],
   providers: [ConfirmationService, MessageService],
   templateUrl: './widget.html',
   styleUrl: './widget.scss',

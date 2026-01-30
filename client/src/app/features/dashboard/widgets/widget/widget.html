@@ -1,12 +1,22 @@
 <p-card>
   <ng-template #title>
     <div class="header">
-      <ng-content select="fred-widget-title"></ng-content>
+      {{ widget().title }}
       <p-menubar [model]="items" [pt]="widgetMenu" />
     </div>
   </ng-template>
   <p>
-    <ng-content select="fred-widget-body"></ng-content>
+    @switch (widget().type) {
+      @case ('graph') {
+        <fred-graph [widget]="widget()"></fred-graph>
+      }
+      @case ('table') {
+        <fred-table [widget]="widget()"></fred-table>
+      }
+      @case ('text') {
+        <fred-text [widget]="widget()"></fred-text>
+      }
+    }
   </p>
 </p-card>
 <p-confirmdialog />
